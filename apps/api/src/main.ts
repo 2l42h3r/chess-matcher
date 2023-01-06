@@ -9,7 +9,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   const redisUrl = configService.get<string>('REDIS_URL') as string;
-  const port = configService.get<number>('APP_PORT') as number;
+  const port = configService.get<number>('PORT') as number;
 
   const redisIoAdapter = new RedisIoAdapter(app, redisUrl);
   await redisIoAdapter.connectToRedis();
