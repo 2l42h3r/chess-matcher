@@ -14,6 +14,7 @@ import { SocketModule } from './socket/socket.module';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         url: configService.get('REDIS_URL'),
+        reconnectOnError: () => 2,
       }),
       inject: [ConfigService],
     }),
