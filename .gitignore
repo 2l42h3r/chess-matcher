@@ -8,14 +8,18 @@ node_modules
 # testing
 coverage
 
-# next.js
-.next/
-out/
-build
-
 # misc
 .DS_Store
 *.pem
+
+# Logs
+logs
+*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
 
 # debug
 npm-debug.log*
@@ -31,3 +35,38 @@ yarn-error.log*
 
 # turbo
 .turbo
+
+## Compiled output
+apps/web/dist
+apps/web/tmp
+apps/web/out-tsc
+apps/web/bazel-out
+apps/api/dist
+
+## IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+## Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.history/*
+
+## Miscellaneous
+apps/web/.angular/cache
+apps/web/.sass-cache/
+apps/web/connect.lock
+apps/web/coverage
+apps/web/libpeerconnection.log
+testem.log
+apps/web/typings
+
+.env
