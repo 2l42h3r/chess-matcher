@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import {
   ConnectedSocket,
   OnGatewayInit,
@@ -14,6 +15,7 @@ export class MatchmakingGateway implements OnGatewayInit {
   constructor(
     private readonly matchmakingService: AbstractMatchmakingService,
     private readonly socketService: SocketService,
+    private readonly logger: Logger,
   ) {}
 
   @WebSocketServer() public server?: Server;
@@ -24,6 +26,7 @@ export class MatchmakingGateway implements OnGatewayInit {
 
   @SubscribeMessage('awaitMatch')
   async awaitMatch(@ConnectedSocket() client: Socket) {
+    this.logger.debug(`Client with id ${client.id} requested match`);
     await this.matchmakingService.matchPlayers(client);
   }
 }

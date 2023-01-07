@@ -1,3 +1,4 @@
+import { Logger } from '@nestjs/common';
 import {
   MessageBody,
   OnGatewayInit,
@@ -11,7 +12,10 @@ import { IMoveMessage } from './move-message.dto';
 
 @WebSocketGateway({ cors: true })
 export class MoveRelayGateway implements OnGatewayInit {
-  constructor(private readonly socketService: SocketService) {}
+  constructor(
+    private readonly socketService: SocketService,
+    private readonly logger: Logger,
+  ) {}
 
   @WebSocketServer() public server?: Server;
 
@@ -24,6 +28,10 @@ export class MoveRelayGateway implements OnGatewayInit {
     if (!this.server) {
       throw new Error();
     }
+
+    this.logger.debug(
+      `Relaying move ${message.move} to opponent ${message.opponentId}`,
+    );
 
     this.server.to(message.opponentId).emit('makeMove', message.move);
   }

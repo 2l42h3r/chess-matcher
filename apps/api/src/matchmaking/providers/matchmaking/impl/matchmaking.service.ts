@@ -1,5 +1,5 @@
 import { RedisService } from 'src/redis';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { Redis } from 'ioredis';
 import { Socket } from 'socket.io';
 import { SocketService } from 'src/socket/socket.service';
@@ -14,6 +14,7 @@ export class MatchmakingService implements AbstractMatchmakingService {
     private readonly socketService: SocketService,
     private readonly matchingService: AbstractMatchingService,
     private readonly sidepickingService: AbstractSidepickingService,
+    private readonly logger: Logger,
   ) {
     this.redisClient = redisService.getClient();
   }
@@ -31,19 +32,30 @@ export class MatchmakingService implements AbstractMatchmakingService {
 
     const queueLength = await this.redisClient.scard('awaiting');
 
+    this.logger.debug(`Checking queue length for client ${playerId}`);
+
     if (queueLength < 2) {
+      this.logger.debug('No other player waiting for match, bailing');
       return;
     }
 
     const opponentId = await this.matchingService.getOpponentID(playerId);
 
+    this.logger.debug(`Found opponent with id ${opponentId}`);
+
     const [playerSide, opponentSide] = this.sidepickingService.pickSides();
+
+    this.logger.debug(
+      `Requesting client plays ${playerSide}, opponent plays ${opponentSide}`,
+    );
 
     clientSocket.emit('awaitMatch', { opponentId, side: playerSide });
 
     wsServer
       .to(opponentId)
       .emit('awaitMatch', { opponentId: playerId, side: opponentSide });
+
+    this.logger.debug(`Removing IDs ${playerId}, ${opponentId} from queue`);
 
     await this.redisClient.srem('awaiting', playerId, opponentId);
   }
