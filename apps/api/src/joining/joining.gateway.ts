@@ -29,7 +29,13 @@ export class JoiningGateway implements OnGatewayInit {
   @SubscribeMessage('join')
   async join(@ConnectedSocket() client: Socket) {
     this.logger.debug(`Client with ID ${client.id} attempting joining`);
+
+    if (!this.server) {
+      throw new Error();
+    }
+
     await this.joiningService.joinClient(client.id);
-    client.emit('join', client.id);
+
+    this.server.to(client.id).emit('join', client.id);
   }
 }

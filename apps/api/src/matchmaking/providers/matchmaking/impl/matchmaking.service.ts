@@ -50,7 +50,7 @@ export class MatchmakingService implements AbstractMatchmakingService {
       `Requesting client plays ${playerSide}, opponent plays ${opponentSide}`,
     );
 
-    clientSocket.emit('awaitMatch', { opponentId, side: playerSide });
+    wsServer.to(playerId).emit('awaitMatch', { opponentId, side: playerSide });
 
     wsServer
       .to(opponentId)
