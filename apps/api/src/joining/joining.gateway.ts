@@ -11,7 +11,7 @@ import { Server, Socket } from 'socket.io';
 import { SocketService } from 'src/socket/socket.service';
 import { AbstractJoiningService } from './providers/joining/abstract-joining.service';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: true })
 export class JoiningGateway implements OnGatewayInit {
   constructor(
     private readonly joiningService: AbstractJoiningService,

@@ -9,7 +9,7 @@ import { Server } from 'socket.io';
 import { SocketService } from 'src/socket/socket.service';
 import { IMoveMessage } from './move-message.dto';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: true })
 export class MoveRelayGateway implements OnGatewayInit {
   constructor(private readonly socketService: SocketService) {}
 

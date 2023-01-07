@@ -9,7 +9,7 @@ import { Server, Socket } from 'socket.io';
 import { SocketService } from 'src/socket/socket.service';
 import { AbstractMatchmakingService } from './providers/matchmaking/abstract-matchmaking.service';
 
-@WebSocketGateway()
+@WebSocketGateway({ cors: true })
 export class MatchmakingGateway implements OnGatewayInit {
   constructor(
     private readonly matchmakingService: AbstractMatchmakingService,
