@@ -15,10 +15,11 @@ export class MatchmakingGateway implements OnGatewayInit {
   constructor(
     private readonly matchmakingService: AbstractMatchmakingService,
     private readonly socketService: SocketService,
-    private readonly logger: Logger,
   ) {}
 
   @WebSocketServer() public server?: Server;
+
+  private readonly logger = new Logger(MatchmakingGateway.name);
 
   afterInit(server: Server) {
     this.socketService.socket = server;

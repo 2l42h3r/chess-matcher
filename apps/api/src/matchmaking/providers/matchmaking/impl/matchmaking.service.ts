@@ -14,10 +14,11 @@ export class MatchmakingService implements AbstractMatchmakingService {
     private readonly socketService: SocketService,
     private readonly matchingService: AbstractMatchingService,
     private readonly sidepickingService: AbstractSidepickingService,
-    private readonly logger: Logger,
   ) {
     this.redisClient = redisService.getClient();
   }
+
+  private readonly logger = new Logger(MatchmakingService.name);
 
   private readonly redisClient: Redis;
 

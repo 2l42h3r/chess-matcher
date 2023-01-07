@@ -12,16 +12,15 @@ import { IMoveMessage } from './move-message.dto';
 
 @WebSocketGateway({ cors: true })
 export class MoveRelayGateway implements OnGatewayInit {
-  constructor(
-    private readonly socketService: SocketService,
-    private readonly logger: Logger,
-  ) {}
+  constructor(private readonly socketService: SocketService) {}
 
   @WebSocketServer() public server?: Server;
 
   afterInit(server: Server) {
     this.socketService.socket = server;
   }
+
+  private readonly logger = new Logger(MoveRelayGateway.name);
 
   @SubscribeMessage('makeMove')
   makeMove(@MessageBody() message: IMoveMessage) {

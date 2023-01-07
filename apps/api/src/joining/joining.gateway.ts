@@ -15,10 +15,11 @@ export class JoiningGateway implements OnGatewayInit {
   constructor(
     private readonly joiningService: AbstractJoiningService,
     private readonly socketService: SocketService,
-    private readonly logger: Logger,
   ) {}
 
   @WebSocketServer() public server?: Server;
+
+  private readonly logger = new Logger(JoiningGateway.name);
 
   afterInit(server: Server) {
     this.logger.debug('WS server assigned in JoiningGateway');
