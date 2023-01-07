@@ -7,6 +7,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server, Socket } from 'socket.io';
+import { ServerUnavailableException } from 'src/exceptions/server-unavailable.exception';
 import { SocketService } from 'src/socket/socket.service';
 import { AbstractJoiningService } from './providers/joining/abstract-joining.service';
 
@@ -31,7 +32,7 @@ export class JoiningGateway implements OnGatewayInit {
     this.logger.debug(`Client with ID ${client.id} attempting joining`);
 
     if (!this.server) {
-      throw new Error();
+      throw new ServerUnavailableException();
     }
 
     await this.joiningService.joinClient(client.id);

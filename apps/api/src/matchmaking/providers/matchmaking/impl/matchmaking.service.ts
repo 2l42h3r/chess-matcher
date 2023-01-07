@@ -6,6 +6,7 @@ import { SocketService } from 'src/socket/socket.service';
 import { AbstractMatchingService } from '../../matching/abstract-matching.service';
 import { AbstractSidepickingService } from '../../sidepicking/abstract-sidepicking.service';
 import { AbstractMatchmakingService } from '../abstract-matchmaking.service';
+import { ServerUnavailableException } from 'src/exceptions/server-unavailable.exception';
 
 @Injectable()
 export class MatchmakingService implements AbstractMatchmakingService {
@@ -26,7 +27,7 @@ export class MatchmakingService implements AbstractMatchmakingService {
     const wsServer = this.socketService.socket;
 
     if (!wsServer) {
-      throw new Error();
+      throw new ServerUnavailableException();
     }
 
     const playerId = clientSocket.id;

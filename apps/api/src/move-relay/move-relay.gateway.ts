@@ -7,6 +7,7 @@ import {
   WebSocketServer,
 } from '@nestjs/websockets';
 import { Server } from 'socket.io';
+import { ServerUnavailableException } from 'src/exceptions/server-unavailable.exception';
 import { SocketService } from 'src/socket/socket.service';
 import { IMoveMessage } from './move-message.dto';
 
@@ -25,7 +26,7 @@ export class MoveRelayGateway implements OnGatewayInit {
   @SubscribeMessage('makeMove')
   makeMove(@MessageBody() message: IMoveMessage) {
     if (!this.server) {
-      throw new Error();
+      throw new ServerUnavailableException();
     }
 
     this.logger.debug(
